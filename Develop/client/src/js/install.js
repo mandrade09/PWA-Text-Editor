@@ -1,35 +1,39 @@
 const butInstall = document.getElementById('buttonInstall');
 
+// Variable to hold the deferred prompt event
+let deferredPrompt;
+
 // Logic for installing the PWA
-
-// TODO: Add an event handler to the `beforeinstallprompt` event
-
-// Handle the `beforeinstallprompt` event
 window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    window.deferredPrompt = event;
-    butInstall.style.display = 'block'; // Show the install button
-  });
+  // Prevent the mini-infobar from appearing on mobile
+  event.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = event;
+  // Update UI to notify the user they can add to home screen
+  butInstall.classList.toggle('hidden', false);
+});
 
-// TODO: Implement a click event handler on the `butInstall` element
-
-// Implement click event handler on the `butInstall` element
+// Implement a click event handler on the `butInstall` element
 butInstall.addEventListener('click', async () => {
-    const promptEvent = window.deferredPrompt;
-    if (!promptEvent) return;
-  
-    promptEvent.prompt();
-    window.deferredPrompt = null;
-    butInstall.style.display = 'none'; // Hide the install button
-  });
+  // Hide the install button
+  butInstall.classList.toggle('hidden', true);
+  // Show the install prompt
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted the A2HS prompt');
+    } else {
+      console.log('User dismissed the A2HS prompt');
+    }
+    // Clear the deferredPrompt variable, it can only be used once
+    deferredPrompt = null;
+  }
+});
 
-
-// TODO: Add an handler for the `appinstalled` event
-
-// Handle the `appinstalled` event
+// Add an handler for the `appinstalled` event
 window.addEventListener('appinstalled', (event) => {
-    console.log('PWA was installed', event);
-    window.deferredPrompt = null;
-  });
-
-  
+  // Log install to analytics or perform other tasks
+  console.log('App installed:', event);
+});
