@@ -64,7 +64,7 @@ If you would like to learn more, or contact me, feel free to reach me at the fol
 
 <ul>
     <li>Render URL: https://pwa-text-editor-5d8n.onrender.com </li>
-    <li>GitHub URL: https://github.com/mandrade09/PWA-Text-Editor/tree/main </li>
+    <li>GitHub URL: https://github.com/mandrade09/PWA-Text-Editor </li>
     <li>E-mail: mattandrade09@gmail.com </li>
     <li>Phone: 310.903.9150</li>
 </ul>
